@@ -55,7 +55,7 @@ class ShoppingCart:
         elif code == 'STUDENT20':
             amount *= 0.8
         elif code == 'SAVE15':
-            amount -= 15
+            amount = max(0, amount - 15)
         elif code == 'FREESHIP':
             print('Shipping is free')
         else:
