@@ -27,6 +27,8 @@ class ShoppingCart:
             existing.quantity += quantity
         else:
             self.lines.append(CartLine(sku, product.name, product.price, quantity))
+        if self.discount_code is not None:
+            self.apply_discount(self.discount_code)
         return True
 
     def remove_item(self, sku, quantity=None):
@@ -36,6 +38,8 @@ class ShoppingCart:
                     self.lines.remove(line)
                 else:
                     line.quantity -= quantity
+                if self.discount_code is not None:
+                    self.apply_discount(self.discount_code)
                 return True
         print('Item not found')
         return False
