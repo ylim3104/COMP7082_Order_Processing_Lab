@@ -20,6 +20,10 @@ class ShoppingCart:
             return False
         existing = next((x for x in self.lines if x.sku == sku), None)
         if existing:
+            total_quantity = existing.quantity + quantity
+            if product.stock < total_quantity:
+                print('Not enough stock')
+                return False
             existing.quantity += quantity
         else:
             self.lines.append(CartLine(sku, product.name, product.price, quantity))
