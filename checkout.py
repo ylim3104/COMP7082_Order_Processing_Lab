@@ -1,6 +1,9 @@
 """Checkout coordinator with deliberate edge-case, consistency and security defects."""
 from models import OrderResult
 
+ORDER_ID = 0
+ORDER_STATUS = 1
+ORDER_AMOUNT = 2
 
 class CheckoutService:
     def __init__(self, repository, payment_gateway):
@@ -8,6 +11,9 @@ class CheckoutService:
         self.payment_gateway = payment_gateway
 
     def checkout(self, cart, payment_token, request_id):
+        existing_order = self.repository.get_existing_order(request_id, cart.user_id)
+        if existing_order is not None:
+            return OrderResult(existing_order[ORDER_ID], existing_order[ORDER_STATUS], existing_order[ORDER_AMOUNT])
         if len(cart.lines) == 0:
             return OrderResult(None, 'empty', 0)
         amount = cart.total()
