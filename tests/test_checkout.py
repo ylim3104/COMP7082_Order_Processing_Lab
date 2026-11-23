@@ -49,3 +49,20 @@ def test_duplicate_checkout(tmp_path):
     assert len(gateway.calls) == 1
     assert repo.get_product(sku).stock == 18
 
+# Testing defect #6
+def test_checkout_insufficient_stock(tmp_path):
+    db = tmp_path / 'test.db'
+    initialize(str(db))
+    repo = StoreRepository(str(db))
+    uid = 'demo-user'
+    cart = ShoppingCart(uid, repo)
+    sku = 'LAP-01'
+    cart.add_item(sku, 2)
+    repo.update_stock(sku, 5)
+    assert repo.get_product(sku).stock == 0
+    gateway = FakePaymentGateway()
+    result = CheckoutService(repo, gateway).checkout(cart, 'TEST_TOKEN', 'demo-request-1')
+    assert result.status == "Laptop not enough stock"
+    assert len(gateway.calls) == 0
+
+
