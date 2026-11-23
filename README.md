@@ -8,6 +8,7 @@ This application intentionally contains defects. Your assignment has three parts
     3) In ShoppingCart class total() made users to apply multiple discounts on products. The ShoppingCart is only keeping track of one discount_code so I assumed that only one discount can be applied. I have replaced the calculation of amount in apply_discount() to subtotal().
     4) In ShoppingCart class I have added apply_discount() in the add_item() and remove_item() if the discount has been applied previously. Before, when the discount is already applied and the user modifies the cart then the discount will not be updated. 
     5) In the checkout.py CheckoutService class, it should not clear cart lines, reset discounted total or update and save cart when the checkout status is declined or payment_error. Otherwise, inventory can be updated incorrectly and the customer need to put items to the cart again and apply the discount again. I have explicitly made those to happen when items have been paid.
+    6) In the CheckoutService class, checkout should check if there is enough stock for each product before the payment. Otherwise, customers can purchase products that are out of stock. I have returned not enough stock when the quantity of the item exceeds the stock. 
 2. Write at least 12 automated unit tests with `pytest`.
 3. Add `.github/workflows/tests.yml` to run tests on pushes and pull requests.
 
