@@ -1,4 +1,3 @@
-import sqlite3
 import pytest
 from setup_db import initialize
 from repository import StoreRepository
