@@ -37,7 +37,8 @@ Use temporary databases and fake payment tokens for unit tests. No real payment 
 7) In the CheckoutService class, checkout() does not check if it is a duplicate checkout. If the user requests the checkout with the same request id then the database will have orders with the same request id and may result in duplicated payments. I have added a new function get_existing_order() in the repository. If the order exists, OrderResult is returned without checking out. 
 8) In the ShoppingCart class, it does not check if the quantity is valid when adding or removing items. When a user adds an invalid quantity then it might crash the program or subtracts when trying to add and vice versa. I have checked if the quantity is a positive integer. Invalid quantities are rejected by returning False without modifying the cart. 
 
-## TESTS
-- Implemented 14 unit tests including the smoke test. 
-- All 14 has passed.
-- Run test: `python -m pytest -q`
+## Automated Tests
+- Implemented 14 automated pytest unit tests including the smoke test. 
+- GitHub Actions automatically runs the tests on every push and pull requests.
+- Run tests locally: `python -m pytest -q`
+- All 14 tests passed.
