@@ -30,3 +30,18 @@ def test_apply_save15_to_less_than_15(tmp_path):
     cart.add_item('USB-01', 1)
     assert cart.apply_discount('SAVE15')
     assert cart.discounted_total == 0
+
+def test_only_apply_one_discount(tmp_path):
+    db = tmp_path / 'test.db'
+    initialize(str(db))
+    cart = ShoppingCart('student', StoreRepository(str(db)))
+    cart.add_item('MOU-01', 1)
+    assert cart.apply_discount('WELCOME10')
+    assert cart.discount_code == 'WELCOME10'
+    expected_total_welcome = 29.95 * 0.9 
+    assert cart.discounted_total == expected_total_welcome
+
+    assert cart.apply_discount('STUDENT20')
+    assert cart.discount_code == 'STUDENT20'
+    expected_total_student = 29.95 * 0.8 
+    assert cart.discounted_total == expected_total_student
